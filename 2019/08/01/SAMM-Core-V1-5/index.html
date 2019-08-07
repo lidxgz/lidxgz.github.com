@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+  
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta name="author" content="Xu Guozhi">
+  
+  
+  <title>Software Assurance Maturity Model-A guide to building security into software development | Hexo</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="信息安全,SAMM,">
+  
+
+  
+  <meta name="description" content>
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":false,"count":false},
+    welcome: {"enable":false,"interval":30},
+    start_time: "2019-08-01",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Xu Guozhi",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">Xugz</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 坚强的码农</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+
+    
+      <aside class="table-content" id="site-toc">
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概要"><span class="toc-text">概要</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#理解模型"><span class="toc-text">理解模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#业务职能"><span class="toc-text">业务职能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#监管"><span class="toc-text">监管</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构建"><span class="toc-text">构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#验证"><span class="toc-text">验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运维"><span class="toc-text">运维</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#成熟度等级"><span class="toc-text">成熟度等级</span></a></li></ol></li></ol>
+  </div>
+</aside>
+
+    
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-08-01
+    </span>
+    
+      <span>
+        | <a href="/categories/信息安全/"><i class="fa fa-bookmark"></i>信息安全</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    Software Assurance Maturity Model-A guide to building security into software development
+  </h1>
+  
+  <article class="passage-article">
+    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>查看最新版和更多信息，请访问网站<a href="https://www.owasp.org/index.php/OWASP_SAMM_Project" title="https://www.owasp.org/index.php/OWASP_SAMM_Project" target="_blank" rel="noopener">https://www.owasp.org/index.php/OWASP_SAMM_Project</a></p>
+<p><strong>鸣谢</strong></p>
+<p>本文档最初是由独立软件安全顾问Pravir Chandra（<a href="mailto:chadra@owasp.org" target="_blank" rel="noopener">chadra@owasp.org</a>)领导的OpenSAMM项目创建的。第一稿的创作是通过从Fortify Software, Inc.获得的资金完成的。自从SAMM的最初版本发布以来，这个项目已经成为OWASP的一部分。本文档目前由Sebastien Deleersnyder、Bart De Win和Brian Glas领导的OWASP SAMM项目维护和更新。同时也要感谢封底上列出的许多支持组织。</p>
+<p><strong>贡献者</strong></p>
+<p>如果没有许多提供贡献和批评反馈的独立审稿人和专家的支持，这项工作是不可能完成的。</p>
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>• Fabio Arciniegas</td>
+<td>• Matt Bartoldus</td>
+<td>• Jonathan Carter</td>
+<td>• Darren Challey</td>
+<td>• Brian Chess</td>
+<td>• Justin Clarke</td>
+</tr>
+<tr>
+<td>• Dan Cornell</td>
+<td>• Michael Craigue</td>
+<td>• Dinis Cruz</td>
+<td>• Sebastien Deleersnyder</td>
+<td>• Justin Derry</td>
+<td>• Bart De Win</td>
+</tr>
+<tr>
+<td>• John Dickson</td>
+<td>• Alexios Fakos</td>
+<td>• David Fern</td>
+<td>• Brian Glas</td>
+<td>• Kuai Hinojosa</td>
+<td>• Jerry Hoff</td>
+</tr>
+<tr>
+<td>• Carsten Huth</td>
+<td>• Bruce Jenkins</td>
+<td>• Daniel Kefer</td>
+<td>• Yan Kravchenko</td>
+<td>• James McGovern</td>
+<td>• Matteo Meucci</td>
+</tr>
+<tr>
+<td>• Jeff Payne</td>
+<td>• Gunnar Peterson</td>
+<td>• Jeff Piper</td>
+<td>• Andy Steingruebl</td>
+<td>• John Steven</td>
+<td>• Chad Thunberg</td>
+</tr>
+<tr>
+<td>• Colin Watson</td>
+<td>• Jeff Williams</td>
+<td>• Steven Wierckx</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><em>这是一个OWASP项目</em></p>
+<blockquote>
+<p>OWASP is an international organization and the OWASP Foundation supports OWASP efforts around the world. OWASP is an open community dedicated to enabling organizations to conceive, develop, acquire, operate, and maintain applications that can be trusted. All of the OWASP tools, documents, forums, and chapters are free and open to anyone interested in improving application security. We advocate approaching application security as a people, process, and technology problem because the most effective approaches to application security include improvements in all of these areas. We can be found at <a href="https://www.owasp.org" target="_blank" rel="noopener">https://www.owasp.org</a>.</p>
+</blockquote>
+<p><em>license</em><br>This work is licensed under the Creative Commons Attribution-Share Alike 4.0 License. To view a copy of this license, visit <a href="https://creativecommons.org/licenses/bysa/4.0/" target="_blank" rel="noopener">https://creativecommons.org/licenses/bysa/4.0/</a> or send an email to <a href="mailto:info@creativecommons.org" target="_blank" rel="noopener">info@creativecommons.org</a>. or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042.</p>
+<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>软件保证成熟度模型(Software Assurance Maturity Model, SAMM)是一个开放的框架，用于帮助组织制定和实施针对组织面临的特定风险的软件安全策略。SAMM提供的资源将有助于：</p>
+<ul>
+<li>评估组织现有的软件安全实践</li>
+<li>在定义良好的迭代中构建一个平衡的软件安全保证程序</li>
+<li>展示一个安全保证项目的具体改进</li>
+<li>定义和度量整个组织中与安全相关的活动</li>
+</ul>
+<p>SAMM1.1将其前身扩展并重组为四个互补的资源： 本文档描述了SAMM核心模型，应用指南解释了如何应用这个模型，快速上手指南帮助加速学习和应用，工具箱为数据收集、度量和图表提供了简单的自动化工具。此外，一些元素已重新命名，以更好地表示它们的用途。</p>
+<p>SAMM1.5加入了对评分模型的细化，以在评估中为评分提供更细的粒度。现在一个组织将会因为在实践中所作的所有相关工作而获得积分，而不是保持在已完成的最高成熟度级别中的基本编号。更新后的评分模型旨在帮助SAMM评估人员和组织避免尴尬的讨论，即当答案介于两者之间时，是否应该标记为yes或no，并展示渐进式的改进。</p>
+<p>SAMM的定义考虑到了灵活性，因此可以由使用任何开发风格的小型、中型和大型组织使用它。此外，该模型可以应用于整个组织、单个业务线，甚至是单个项目。除了这些特性之外，SAMM还建立在以下原则之上：</p>
+<ul>
+<li>随着时间的推移，组织的行为会发生缓慢的变化——一个成功的软件安全程序应该在小的迭代中被指定，这些迭代可以交付有形的保证收益，同时增量地朝着长期目标工作。</li>
+<li>没有一种方法可以适用于所有的组织——软件安全框架必须是灵活的，并且允许组织根据他们的风险容忍度以及他们构建和使用软件的方式来调整他们的选择。</li>
+<li>与安全活动相关的指导必须是规范的——构建和评估保证程序的所有步骤都应该是简单的、定义良好的和可度量的。该模型还为常见类型的组织提供了路线图模板。</li>
+</ul>
+<p>模型的基础建立在软件开发的核心业务功能之上，每个业务功能都与安全实践相关联（见下图）。模型的构建块是为12个安全实践中的每一个定义的三个成熟度级别。这些定义了组织可以从事的各种各样的活动，以减少安全风险和增加软件保证。还包括其他细节，以衡量成功的活动绩效，了解相关的保障利益，估计人员和其他成本。</p>
+<p>作为一个开放的项目，SAMM的内容应始终保持供应商中立，并免费提供给所有人使用。</p>
+<p><img src="../public/img/samm_core_zh.png" alt></p>
+<h1 id="理解模型"><a href="#理解模型" class="headerlink" title="理解模型"></a>理解模型</h1><p>SAMM建立在一组安全实践的基础上，这些实践与软件开发中涉及的核心业务功能相关联。本节将介绍这些业务功能以及它们对应的安全实践。在介绍了高层级框架之后，还简要讨论了每种安全实践的成熟度级别，以便了解如何随着时间的推移迭代地改进每种实践。</p>
+<h2 id="业务职能"><a href="#业务职能" class="headerlink" title="业务职能"></a>业务职能</h2><p><strong><em>在最高层，SAMM定义了四个关键业务职能。</em></strong>每个业务职能都是与软件开发的具体细节相关的活动的类别，或者换句话说，任何与软件开发相关的组织都必须在一定程度上实现这些业务职能。</p>
+<p><strong><em>对于每个业务职能，SAMM定义了三个安全实践。</em></strong>每个安全实践都是与安全相关的活动的一个领域，这些活动为相关的业务职能建立保证。一共有12个相互独立改进的安全实践，这些实践对应到软件开发的四个业务职能。</p>
+<p><strong><em>对于每个安全实践，SAMM将三个成熟度级别定义为目标。</em></strong>安全实践中的每一层都有一个由特定活动定义的更复杂的目标，以及比前一层更严格的成功度量。此外，每个安全实践都可以独立地改进，尽管相关活动可以带来最优化。</p>
+<h3 id="监管"><a href="#监管" class="headerlink" title="监管"></a>监管</h3><p>“监管”以与组织如何管理整体软件开发活动相关的流程和活动为中心。更具体地说，这包括那些对在开发中涉及的跨职能部门产生影响的问题以及在组织级建立的业务流程。</p>
+<p><code>策略与指标</code>包含了软件保证计划的总体战略方向以及用于收集有关组织安全状况指标的流程和活动的工具。<br><code>策略与合规性</code>包含在整个组织中建立安全性，合规性和审计控制框架，以增强对正在建设和运营的软件的保证。<br><code>教育和指导</code>包括通过对与个人工作职能相关的安全主题的培训和指导，增加软件开发人员的安全知识。</p>
+<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>“构建”关注与组织如何在开发项目中定义目标和创建软件相关的过程和活动。通常，这将包括产品管理、需求收集、高级体系结构规范、详细设计和实现。</p>
+<p><code>威胁评估</code>包括准确识别和描述对组织软件的潜在攻击，以便更好地理解风险并促进风险管理<br><code>安全需求</code>包括敦促在软件开发过程中包含安全相关的需求，以便在一开始就指定正确的功能。<br><code>安全架构</code>包括通过一系列活动来支持设计的过程，以促进默认安全的设计和对构建软件所用的技术和框架的控制。</p>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>“验证”主要关注与组织如何检查和测试整个软件开发过程中生成的产物相关的过程和活动。这通常包括质量保证工作，如测试，但也可以包括其他评审和评估活动。</p>
+<p><code>设计评审</code>包括检查设计阶段生成的产物，以确保提供足够的安全机制，并符合组织对安全的期望。<br><code>代码评审</code>包括对组织的源代码进行评估，以帮助发现漏洞和相关的修补措施，并建立起安全编码期望的基线。<br><code>安全测试</code>包括在运行环境中测试组织的软件，以发现漏洞并建立软件发布的最低标准</p>
+<h3 id="运维"><a href="#运维" class="headerlink" title="运维"></a>运维</h3><p>“运维”包括组织如何管理软件发布相关的流程和活动。这包括将产品交付给最终用户，将产品部署到内部或外部主机，以及运行时环境中软件的常规操作。</p>
+<p><code>问题管理</code>包括为管理内部和外部漏洞报告建立一致的流程，以限制风险并收集数据，以增强安全保障计划。<br><code>环境强化</code>包括对围绕组织的软件的操作环境实施控制，以增强已部署的应用程序的安全性。<br><code>运维支持</code>包括识别和捕获运维人员正确配置、部署和运行组织软件所需的安全相关信息。</p>
+<h2 id="成熟度等级"><a href="#成熟度等级" class="headerlink" title="成熟度等级"></a>成熟度等级</h2><p>十二个安全实践中的每一个实践，都定义了三个成熟度等级和一个隐含的为零的起点。每个等级的细节在不同实践之间有所不同，但它们普遍代表：</p>
+<ul>
+<li>0 隐含的起点，代表实践中的活动尚未实现。</li>
+<li>1 对安全实践有了初步理解和特别的规定</li>
+<li>2 提高安全实践的效率和/或有效性</li>
+<li>3 在一定规模上综合掌握了安全实践</li>
+</ul>
+<blockquote>
+<p><strong>备注</strong></p>
+<p>在本文档中，以下术语是指在本节中定义的SAMM组件的保留字：</p>
+<ul>
+<li>业务职能</li>
+<li>安全实践</li>
+<li>成熟度等级或目标</li>
+</ul>
+</blockquote>
+
+  </article>
+
+  
+  
+    <div class="passage-tags">
+    
+      <a href="/tags/SAMM/"><i class="fa fa-tags"></i>SAMM</a>
+    
+    </div>
+  
+</div>
+
+
+    </main>
+    
+    
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>
